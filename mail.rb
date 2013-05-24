@@ -21,13 +21,12 @@ class PostSorting
   end
 
   def value_filter_10(value) # 2) how many parcels with value higher than 10 were sent
-    value = 10
     @orders.select { |order| order.value > value }.size
   end
 
   def popular_address # 3) what is the most popular address
     adresses = Hash.new(0)
-    @posts.each {|order| adresses["#{order.city} #{order.street} #{order.house} #{order.apartment}"] += 1 }
+    @orders.each {|order| adresses["#{order.city} #{order.street} #{order.house} #{order.apartment}"] += 1 }
     adresses.max_by {|key,value| value}.first
   end 
 end 
@@ -38,7 +37,10 @@ sorting.add_post(PostOrder.new("Dnepropetrovsk","Kamchatska street","1","14","Va
 sorting.add_post(PostOrder.new("Solone","Kul street","5","0","Jeyson",1))
 sorting.add_post(PostOrder.new("Petropalovka","Prog street","8","45","Viktor",3))
 sorting.add_post(PostOrder.new("Petropalovka","Prog street","8","45","Viktor",3))
+puts "The number of parcels sent to city: "
 puts sorting.the_number_of_parcels_in_the_city("Petropalovka")
-puts sorting.value_filter_10
+puts "How many parcels with value higher than 10 were sent:"
+puts sorting.value_filter_10(10)
+puts "What is the most popular address:"
 puts sorting.popular_address
 
