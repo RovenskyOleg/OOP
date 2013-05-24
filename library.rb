@@ -30,7 +30,7 @@ class Library
     delay_smallest_period = @orders_book.select { |x| x.delay_smallest_period }
     delay_smallest_period.compact!
     delay_smallest_period.min
-    Time.at(delay).getgm.strftime("%H:%M:%S")
+    Time.at(delay_smallest_period).getgm.strftime("%H:%M:%S")
   end
 
   def order_satisfied
