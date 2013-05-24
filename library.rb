@@ -16,17 +16,27 @@ class Library
   def add_order_book(new_order_book) #передача пользовательских данных в @orders_book 
     @orders_book << new_order_book 
   end
+  # 1) the smallest period for which library found a book
 
-  def smallest_period # 1) the smallest period for which library found a book
-    time = Hash.new(0)
-    @orders_book.each { |x|  time [x.issue_date.nil? ? nil : x.issue_date - x.order_date != nil]}.delete(nil)
-    time.sort_by{|key, value| value}.last
+  def delay_smallest_period
+    if  @issue_date 
+      x.issue_date - x.order_date
+    else
+      nil
+    end
+  end
+
+  def smallest_period 
+    delay_smallest_period = @orders_book.select { |x| x.delay_smallest_period }
+    delay_smallest_period.compact!
+    delay_smallest_period.min
+    Time.at(delay).getgm.strftime("%H:%M:%S")
   end
 
   def order_satisfied
     @orders_book.select { |x| x.issue_date == nil }.size
   end
-
+  
   #Как альтернатива 2-му методу (вопрос c хешами не работает?)
   #def order_satisfied_variant_2()
    # a = @orders_book.size
