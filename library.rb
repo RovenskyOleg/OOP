@@ -17,23 +17,17 @@ class Library
     @orders_book << new_order_book 
   end
 
-#  def smallest_period # 1) the smallest period for which library found a book
- #   @orders_book.each{|order| if order.issue_date > 0 
- #     time = order.issue_date - order.order_date
- #     variable = time if time == nil
- #   }
- #   Time.at(variable).getgm.strftime("%H:%M:%S")
- # end
-# можо через select
-  def order_satisfied # 2) how many orders were not satisfied
-    @orders_book.inject(0) { |counter, order| order.issue_date.nil? ? counter + 1 : counter }
+  def smallest_period # 1) the smallest period for which library found a book
+    time = Hash.new(0)
+    @orders_book.each { |x|  time [x.issue_date.nil? ? nil : x.issue_date - x.order_date != nil]}.delete(nil)
+    time.sort_by{|key, value| value}.last
   end
 
-  def order_satisfied_2
-    @orders_book.select{|x| x.issue_date == nil}.size
+  def order_satisfied
+    @orders_book.select { |x| x.issue_date == nil }.size
   end
 
-#Как альтернатива 2-му методу (вопрос c хешами не работает?)
+  #Как альтернатива 2-му методу (вопрос c хешами не работает?)
   #def order_satisfied_variant_2()
    # a = @orders_book.size
     #@orders_book.compact! # удаление nil
@@ -54,7 +48,9 @@ class Library
   end
 
   def number_people # 5) how many people ordered one of the three most popular books
-    
+    books = Hash.new(0)
+    @orders_book.each {|order| books[order.name_book] +=1}
+    books.sort_by{|key, value| value}.last
   end
 end
 
@@ -64,13 +60,10 @@ library.add_order_book(Users.new("user2","book2",Time.now,Time.now+11))
 library.add_order_book(Users.new("user3","book3",Time.now,Time.now+15))
 library.add_order_book(Users.new("user4","book1",Time.now))
 library.add_order_book(Users.new("user1","book1",Time.now,Time.now+10))
-#puts "The smallest period for which library found a book:"
-#puts library.smallest_period
-puts "How many orders were not satisfied Method 1:"
+puts "The smallest period for which library found a book:"
+puts library.smallest_period
+puts "How many orders were not satisfied:"
 puts library.order_satisfied
-puts "How many orders were not satisfied Method 2:"
-puts library.order_satisfied_2
-#puts library.order_satisfied_variant_2
 puts "Who often takes the book:"
 puts library.regular_name("book1")
 puts "What is the most popular book:"
