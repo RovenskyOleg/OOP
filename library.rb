@@ -6,6 +6,14 @@ class Users
   end
 end
 
+def delay_smallest_period
+  if  @issue_date 
+    @issue_date - @order_date
+  else
+    nil
+  end
+end
+
 class Library 
   attr_accessor :orders_book
   
@@ -18,16 +26,8 @@ class Library
   end
   # 1) the smallest period for which library found a book
 
-  def delay_smallest_period
-    if  @issue_date 
-      @issue_date - @order_date
-    else
-      nil
-    end
-  end
-
   def smallest_period 
-    delay_smallest_period = @orders_book.select { |x| x.delay_smallest_period }
+    delay_smallest_period = @orders_book.select{ |x| x.delay_smallest_period }
     delay_smallest_period.compact!
     delay_smallest_period.min
     Time.at(delay_smallest_period).getgm.strftime("%H:%M:%S")
@@ -36,14 +36,6 @@ class Library
   def order_satisfied
     @orders_book.select { |x| x.issue_date == nil }.size
   end
-  
-  #Как альтернатива 2-му методу (вопрос c хешами не работает?)
-  #def order_satisfied_variant_2()
-   # a = @orders_book.size
-    #@orders_book.compact! # удаление nil
-    #b = @orders_book.size
-    #value = a - b
-  #end
 
   def regular_name(book) # 3) who often takes the book 
     users = Hash.new(0)
