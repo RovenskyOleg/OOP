@@ -20,7 +20,7 @@ class Library
 
   def delay_smallest_period
     if  @issue_date 
-      x.issue_date - x.order_date
+      @issue_date - @order_date
     else
       nil
     end
