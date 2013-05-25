@@ -33,19 +33,19 @@ class Library
 
   def regular_name(book) # 3) who often takes the book 
     users = Hash.new(0)
-    @orders_book.each {|order| users[order.name] +=1 if book == order.name_book}
+    @orders_book.each {|x| users[x.name] +=1 if book == x.name_book}
     user = users.max_by {|key,value| value}.first  
   end
 
   def popular_book(*books) # 4) what is the most popular book
     books = Hash.new(0)
-    @orders_book.each {|order| books[order.name_book] +=1}
+    @orders_book.each {|x| books[x.name_book] +=1}
     book_popular = books.max_by {|key,value| value}.first 
   end
 
   def number_people # 5) how many people ordered one of the three most popular books
     books = Hash.new(0)
-    @orders_book.each {|order| books[order.name_book] +=1}
+    @orders_book.each {|x| books[x.name_book] +=1}
     books.sort_by{|key, value| value}.last
   end
 end
