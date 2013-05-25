@@ -6,11 +6,7 @@ class Users
   end
 
   def delay_smallest_period
-    if  @issue_date 
-      @issue_date - @order_date
-    else
-      nil
-    end
+    delay = @issue_date.nil? ? nil :  @issue_date - @order_date
   end
 end
 
@@ -27,9 +23,7 @@ class Library
   # 1) the smallest period for which library found a book
 
   def smallest_period 
-    delay_smallest_period = @orders_book.select{ |x| x.delay_smallest_period }
-    delay_smallest_period.compact!
-    delay_smallest_period.min
+    delay_smallest_period = @orders_book.map{ |x| x.delay_smallest_period }.compact.min
     Time.at(delay_smallest_period).getgm.strftime("%H:%M:%S")
   end
 
