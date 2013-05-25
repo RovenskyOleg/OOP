@@ -4,13 +4,13 @@ class Users
   def initialize (name, name_book, order_date = Time.now, issue_date = nil)
     @name, @name_book, @order_date, @issue_date = name, name_book, order_date, issue_date
   end
-end
 
-def delay_smallest_period
-  if  @issue_date 
-    @issue_date - @order_date
-  else
-    nil
+  def delay_smallest_period
+    if  @issue_date 
+      @issue_date - @order_date
+    else
+      nil
+    end
   end
 end
 
